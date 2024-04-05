@@ -7,35 +7,35 @@ import java.sql.*;
 import java.util.*;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private static final String tableName = "User";
-    private static final String idField = "id";
-    private static final String nameField = "name";
-    private static final String ageField = "age";
-    private static final String lastnameField = "lastname";
+    private static final String TABLE_NAME = "User";
+    private static final String ID_FIELD = "id";
+    private static final String NAME_FIELD = "name";
+    private static final String AGE_FIELD = "age";
+    private static final String LASTNAME_FIELD = "lastname";
 
     public UserDaoJDBCImpl() {
     }
 
     public void createUsersTable() {
-        String queryString = "CREATE TABLE IF NOT EXISTS " + tableName +
+        String queryString = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
                 " (" +
-                idField + " BIGINT primary key auto_increment, " +
-                nameField + " VARCHAR(10), " +
-                lastnameField + " VARCHAR(10), " +
-                ageField + " TINYINT) ENGINE=InnoDB   DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT";
+                ID_FIELD + " BIGINT primary key auto_increment, " +
+                NAME_FIELD + " VARCHAR(10), " +
+                LASTNAME_FIELD + " VARCHAR(10), " +
+                AGE_FIELD + " TINYINT) ENGINE=InnoDB   DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT";
 
         executeQuery(queryString);
     }
 
     public void dropUsersTable() {
-        String queryString = "DROP TABLE IF EXISTS " + tableName;
+        String queryString = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
         executeQuery(queryString);
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        String queryString = "INSERT INTO " + tableName +
-                " (" + nameField + "," + lastnameField + "," + ageField + ") " +
+        String queryString = "INSERT INTO " + TABLE_NAME +
+                " (" + NAME_FIELD + "," + LASTNAME_FIELD + "," + AGE_FIELD + ") " +
                 "VALUES (?,?,?)";
         Map<Integer, String> parameters = new HashMap<>();
 
@@ -46,8 +46,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
-        String queryString = "DELETE FROM " + tableName +
-                " WHERE " + tableName + "." + idField + "=?";
+        String queryString = "DELETE FROM " + TABLE_NAME +
+                " WHERE " + TABLE_NAME + "." + ID_FIELD + "=?";
         Map<Integer, String> parameters = new HashMap<>();
 
         parameters.put(1, String.valueOf(id));
@@ -55,7 +55,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public List<User> getAllUsers() {
-        String queryString ="SELECT * FROM " + tableName;
+        String queryString ="SELECT * FROM " + TABLE_NAME;
         List<User> userList = new ArrayList<>();
         User user;
 
@@ -80,7 +80,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-        String queryString = "TRUNCATE TABLE " + tableName;
+        String queryString = "TRUNCATE TABLE " + TABLE_NAME;
 
         executeQuery(queryString);
     }

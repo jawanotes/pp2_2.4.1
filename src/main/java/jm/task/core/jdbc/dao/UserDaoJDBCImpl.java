@@ -34,9 +34,6 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        /*String queryString = "INSERT INTO " + tableName +
-                " (" + nameField + "," + lastnameField + "," + ageField + ") " +
-                "VALUES (?,?,?)";*/
         String queryString = "INSERT INTO " + tableName +
                 " (" + nameField + "," + lastnameField + "," + ageField + ") " +
                 "VALUES (?,?,?)";
@@ -46,15 +43,6 @@ public class UserDaoJDBCImpl implements UserDao {
         parameters.put(2, lastName);
         parameters.put(3, String.valueOf(age));
         executeQuery(queryString, parameters);
-/*        try (Connection conn = Util.getConnection();
-             PreparedStatement statement = conn.prepareStatement(queryString)) {
-            statement.setString(1, name);
-            statement.setString(2, lastName);
-            statement.setByte(3, age);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }*/
     }
 
     public void removeUserById(long id) {
@@ -64,13 +52,6 @@ public class UserDaoJDBCImpl implements UserDao {
 
         parameters.put(1, String.valueOf(id));
         executeQuery(queryString, parameters);
-/*        try (Connection conn = Util.getConnection();
-             PreparedStatement statement = conn.prepareStatement(queryString)) {
-            statement.setLong(1, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }*/
     }
 
     public List<User> getAllUsers() {
@@ -107,7 +88,6 @@ public class UserDaoJDBCImpl implements UserDao {
     private void executeQuery(String query) {
         try (Connection connection = Util.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
-            //fillStatementParameters(statement, null).executeUpdate();
             statement.executeUpdate();
 
         } catch (SQLException e) {
@@ -119,15 +99,7 @@ public class UserDaoJDBCImpl implements UserDao {
         try (Connection connection = Util.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            /*if (parameters != null) {
-                Set<Integer> keySet = parameters.keySet();
-                for (Integer key : keySet) {
-                    statement.setString(key, parameters.getOrDefault(key, ""));
-                }
-            }*/
             fillStatementParameters(statement, parameters).executeUpdate();
-            //statement.executeUpdate();
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -7,7 +7,7 @@ import jm.task.core.jdbc.service.UserServiceImpl;
 import java.util.List;
 
 public class Main {
-    static final String USER_ADDED_STRING = "User с именем – %s добавлен в базу данных\n";
+    private static final String USER_ADDED_STRING = "User с именем – %s добавлен в базу данных\n";
     public static void main(String[] args) {
         User man;
 

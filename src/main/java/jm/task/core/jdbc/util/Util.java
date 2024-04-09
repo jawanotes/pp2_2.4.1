@@ -1,11 +1,36 @@
 package jm.task.core.jdbc.util;
 
+import jm.task.core.jdbc.model.User;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class Util {
+    private static final String USER = "hkl";
+    private static final String PASS = "secret";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/pp211";
+
+    private Util() {}
+
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/pp211", "hkl", "secret");
+        return DriverManager.getConnection(DB_URL, USER, PASS);
+    }
+
+    public static SessionFactory getSessionFactory() {
+        Properties prop = new Properties();
+        prop.setProperty("hibernate.connection.url", DB_URL);
+        //prop.setProperty("dialect", "org.hibernate.dialect.MySQL");
+        //prop.setProperty("hibernate.connection.CharSet", "utf8");
+        //prop.setProperty("hibernate.connection.characterEncoding", "utf8");
+        //prop.setProperty("hibernate.connection.useUnicode", "true");
+        //prop.setProperty("hibernate.connection.autocommit", "false");
+        prop.setProperty("hibernate.connection.username", USER);
+        prop.setProperty("hibernate.connection.password", PASS);
+
+        return new Configuration().addProperties(prop).addAnnotatedClass(User.class).buildSessionFactory();
     }
 }

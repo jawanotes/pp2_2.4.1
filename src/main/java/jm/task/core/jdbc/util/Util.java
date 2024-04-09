@@ -23,11 +23,6 @@ public class Util {
     public static SessionFactory getSessionFactory() {
         Properties prop = new Properties();
         prop.setProperty("hibernate.connection.url", DB_URL);
-        //prop.setProperty("dialect", "org.hibernate.dialect.MySQL");
-        //prop.setProperty("hibernate.connection.CharSet", "utf8");
-        //prop.setProperty("hibernate.connection.characterEncoding", "utf8");
-        //prop.setProperty("hibernate.connection.useUnicode", "true");
-        //prop.setProperty("hibernate.connection.autocommit", "false");
         prop.setProperty("hibernate.connection.username", USER);
         prop.setProperty("hibernate.connection.password", PASS);
 

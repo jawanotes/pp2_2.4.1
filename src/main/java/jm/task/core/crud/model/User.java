@@ -1,4 +1,4 @@
-package jm.task.core.jdbc.model;
+package jm.task.core.crud.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

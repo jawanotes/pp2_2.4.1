@@ -1,7 +1,7 @@
-package jm.task.core.jdbc.dao;
+package jm.task.core.crud.dao;
 
-import jm.task.core.jdbc.model.User;
-import jm.task.core.jdbc.util.Util;
+import jm.task.core.crud.model.User;
+import jm.task.core.crud.util.Util;
 
 import java.sql.*;
 import java.util.*;

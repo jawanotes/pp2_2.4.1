@@ -1,6 +1,6 @@
-package jm.task.core.jdbc.service;
+package jm.task.core.crud.service;
 
-import jm.task.core.jdbc.model.User;
+import jm.task.core.crud.model.User;
 
 import java.util.List;
 

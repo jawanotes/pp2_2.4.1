@@ -1,6 +1,6 @@
-package jm.task.core.jdbc.util;
+package jm.task.core.crud.util;
 
-import jm.task.core.jdbc.model.User;
+import jm.task.core.crud.model.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 

@@ -1,14 +1,16 @@
-package jm.task.core.jdbc.dao;
+package jm.task.core.crud.dao;
 
-import jm.task.core.jdbc.model.User;
+import jm.task.core.crud.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static jm.task.core.jdbc.util.Util.getSessionFactory;
+import static jm.task.core.crud.util.Util.getSessionFactory;
 
+@Repository
 public class UserDaoHibernateImpl implements UserDao {
     private static final SessionFactory SESSION_FACTORY = getSessionFactory();
     private static final String TABLE_NAME = User.class.getSimpleName();

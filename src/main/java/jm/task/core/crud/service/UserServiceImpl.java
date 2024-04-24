@@ -16,26 +16,47 @@ public class UserServiceImpl implements UserService {
         this.userDao = userDao;
     }
 
+    @Override
     public void createUsersTable() {
         userDao.createUsersTable();
     }
-
+    @Override
     public void dropUsersTable() {
         userDao.dropUsersTable();
     }
-
+    @Override
     public void saveUser(String name, String lastName, byte age) {
-        userDao.saveUser(name, lastName, age);
+        userDao.createUser(name, lastName, age);
     }
 
+    @Override
+    public User createUser(User user) {
+        return userDao.createUser(user);
+    }
+    @Override
     public void removeUserById(long id) {
         userDao.removeUserById(id);
     }
 
+    @Override
+    public void removeUser(User user) {
+        userDao.removeUser(user);
+    }
+    @Override
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
 
+    @Override
+    public User getUser(long id) {
+        return userDao.getUser(id);
+    }
+
+    @Override
+    public User updateUser(User user) {
+        return userDao.updateUser(user);
+    }
+    @Override
     public void cleanUsersTable() {
         userDao.cleanUsersTable();
     }

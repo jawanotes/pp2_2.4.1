@@ -1,26 +1,24 @@
 package jm.task.core.crud.dao;
 
 import jm.task.core.crud.model.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
-
-import static jm.task.core.crud.util.Util.getSessionFactory;
 
 @Repository
 public class UserDaoHibernateImpl implements UserDao {
-    private static final SessionFactory SESSION_FACTORY = getSessionFactory();
+    private final EntityManager entityManager;
     private static final String TABLE_NAME = User.class.getSimpleName();
     private static final String ID_FIELD = "id";
     private static final String NAME_FIELD = "name";
     private static final String AGE_FIELD = "age";
     private static final String LASTNAME_FIELD = "lastname";
 
-    public UserDaoHibernateImpl() {
-
+    @Autowired
+    public UserDaoHibernateImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
 
@@ -45,14 +43,36 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     @Override
-    public void saveUser(String name, String lastName, byte age) {
+    public User createUser(String name, String lastName, byte age) {
         User user = new User(name, lastName, age);
 
-        try (Session session = SESSION_FACTORY.openSession()) {
+        entityManager.persist(user);
+        /*try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             session.saveOrUpdate(user);
             transaction.commit();
-        }
+        }*/
+        return user;
+    }
+
+    @Override
+    public User createUser(User user) {
+        entityManager.persist(user);
+        return user;
+    }
+
+    @Override
+    public User updateUser(User user) {
+        return entityManager.merge(user);
+    }
+
+    @Override
+    public User getUser(long id) {
+        User user = new User();
+
+        user.setId(id);
+        return entityManager.find(User.class, user);
+        //return null;
     }
 
     @Override
@@ -60,24 +80,31 @@ public class UserDaoHibernateImpl implements UserDao {
         User user = new User();
 
         user.setId(id);
-        try (Session session = SESSION_FACTORY.openSession()) {
+        entityManager.remove(user);
+        /*try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             session.delete(user);
             transaction.commit();
-        }
+        }*/
+    }
+
+    @Override
+    public void removeUser(User user) {
+        entityManager.remove(user);
     }
 
     @Override
     public List<User> getAllUsers() {
-        String queryString = "SELECT * FROM " + TABLE_NAME;
-        List<User> userList;
+        /*String queryString = "SELECT * FROM " + TABLE_NAME;
+        List<User> userList;*/
 
-        try (Session session = SESSION_FACTORY.openSession()) {
+        return entityManager.createQuery("FROM User", User.class).getResultList();
+        /*try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             userList = session.createNativeQuery(queryString, User.class).list();
             transaction.commit();
-        }
-        return userList;
+        }*/
+        //return userList;
     }
 
     @Override
@@ -88,10 +115,11 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     private void executeQuery(String queryString) {
-        try(Session session = SESSION_FACTORY.openSession()) {
+        entityManager.createNativeQuery(queryString).executeUpdate();
+        /*try(Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             session.createNativeQuery(queryString).executeUpdate();
             transaction.commit();
-        }
+        }*/
     }
 }

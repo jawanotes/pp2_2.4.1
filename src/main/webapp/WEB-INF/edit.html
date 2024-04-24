@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<!--/* Workaround for bug https://youtrack.jetbrains.com/issue/IDEA-132738 -->
+<!--@thymesVar id="user" type="jm.task.core.crud.model.User"-->
+<!--@thymesVar id="name" type="String"-->
+<!--@thymesVar id="lastName" type="String"-->
+<!--*/-->
+<head>
+  <meta charset="UTF-8">
+  <title>Update person</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/update(id=${user.getId()})}" th:object="${user}">
+  <label for="name">Enter name: </label>
+  <input type="text" th:field="*{name}" id="name"/>
+  <br/>
+  <label for="lastName">Enter last name: </label>
+  <input type="text" th:field="*{lastName}" id="lastName"/>
+  <br/>
+  <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>

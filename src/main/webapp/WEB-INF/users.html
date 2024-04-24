@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>List of users. One page to rule them all.</title>
+</head>
+<body>
+<div>
+  <table>
+    <caption>List of users</caption>
+    <thead>
+    <tr>
+      <th th>ID</th>
+      <th th>Name</th>
+      <th th>LastName</th>
+      <th th> </th>
+      <th th> </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="array: ${userlist}">
+      <td th:text="${array.getId()}"/>
+      <td th:text="${array.getName()}"/>
+      <td th:text="${array.getLastName()}"/>
+      <td>
+        <a th:href="@{/edit(id=${array.getId()})}">Edit</a>
+      </td>
+      <td>
+        <form th:method="POST"
+              th:action="@{/delete(id=${array.getId()})}"
+        >
+          <input class="button"
+                 type="submit"
+                 value="Delete"/>
+        </form>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<br/>
+<hr/>
+<a href="/new">Create new person</a>
+</body>
+</html>

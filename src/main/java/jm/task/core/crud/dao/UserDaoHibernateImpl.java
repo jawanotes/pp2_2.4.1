@@ -2,13 +2,17 @@ package jm.task.core.crud.dao;
 
 import jm.task.core.crud.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 public class UserDaoHibernateImpl implements UserDao {
+    @PersistenceContext
     private final EntityManager entityManager;
     private static final String TABLE_NAME = User.class.getSimpleName();
     private static final String ID_FIELD = "id";
@@ -16,13 +20,19 @@ public class UserDaoHibernateImpl implements UserDao {
     private static final String AGE_FIELD = "age";
     private static final String LASTNAME_FIELD = "lastname";
 
+    /*@Autowired
+    public UserDaoHibernateImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }*/
     @Autowired
     public UserDaoHibernateImpl(EntityManager entityManager) {
+
         this.entityManager = entityManager;
     }
 
 
     @Override
+    @Transactional
     public void createUsersTable() {
         String queryString = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
                 " (" +
@@ -36,12 +46,14 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     @Override
+    @Transactional
     public void dropUsersTable() {
         String queryString = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
         executeQuery(queryString);
     }
 
+    @Transactional
     @Override
     public User createUser(String name, String lastName, byte age) {
         User user = new User(name, lastName, age);
@@ -56,30 +68,29 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     @Override
+    @Transactional
     public User createUser(User user) {
         entityManager.persist(user);
         return user;
     }
 
     @Override
+    @Transactional
     public User updateUser(User user) {
         return entityManager.merge(user);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User getUser(long id) {
-        User user = new User();
-
-        user.setId(id);
-        return entityManager.find(User.class, user);
+        return entityManager.find(User.class, id);
         //return null;
     }
 
     @Override
+    @Transactional
     public void removeUserById(long id) {
-        User user = new User();
-
-        user.setId(id);
+        User user = entityManager.find(User.class, id);
         entityManager.remove(user);
         /*try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
@@ -89,11 +100,14 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     @Override
+    @Transactional
     public void removeUser(User user) {
+        user = entityManager.find(User.class, user.getId());
         entityManager.remove(user);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         /*String queryString = "SELECT * FROM " + TABLE_NAME;
         List<User> userList;*/
@@ -108,6 +122,7 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     @Override
+    @Transactional
     public void cleanUsersTable() {
         String queryString = "TRUNCATE TABLE " + TABLE_NAME;
 

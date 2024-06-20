@@ -2,7 +2,6 @@ package jm.task.core.crud.dao;
 
 import jm.task.core.crud.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +19,6 @@ public class UserDaoHibernateImpl implements UserDao {
     private static final String AGE_FIELD = "age";
     private static final String LASTNAME_FIELD = "lastname";
 
-    /*@Autowired
-    public UserDaoHibernateImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }*/
     @Autowired
     public UserDaoHibernateImpl(EntityManager entityManager) {
 
@@ -59,11 +54,6 @@ public class UserDaoHibernateImpl implements UserDao {
         User user = new User(name, lastName, age);
 
         entityManager.persist(user);
-        /*try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.saveOrUpdate(user);
-            transaction.commit();
-        }*/
         return user;
     }
 
@@ -84,7 +74,6 @@ public class UserDaoHibernateImpl implements UserDao {
     @Transactional(readOnly = true)
     public User getUser(long id) {
         return entityManager.find(User.class, id);
-        //return null;
     }
 
     @Override
@@ -92,11 +81,6 @@ public class UserDaoHibernateImpl implements UserDao {
     public void removeUserById(long id) {
         User user = entityManager.find(User.class, id);
         entityManager.remove(user);
-        /*try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.delete(user);
-            transaction.commit();
-        }*/
     }
 
     @Override
@@ -109,16 +93,7 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
-        /*String queryString = "SELECT * FROM " + TABLE_NAME;
-        List<User> userList;*/
-
         return entityManager.createQuery("FROM User", User.class).getResultList();
-        /*try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction();
-            userList = session.createNativeQuery(queryString, User.class).list();
-            transaction.commit();
-        }*/
-        //return userList;
     }
 
     @Override
@@ -131,10 +106,5 @@ public class UserDaoHibernateImpl implements UserDao {
 
     private void executeQuery(String queryString) {
         entityManager.createNativeQuery(queryString).executeUpdate();
-        /*try(Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.createNativeQuery(queryString).executeUpdate();
-            transaction.commit();
-        }*/
     }
 }

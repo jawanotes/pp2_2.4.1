@@ -45,8 +45,16 @@ public class UserController {
     }
 
     @PostMapping("/delete")
-    public String deleteUser(@ModelAttribute("user") User user) {
-        userService.removeUser(user);
+    public String deleteUser(@RequestParam(value = "id", required = true) Long id, ModelMap model) {
+    //public String deleteUser(@ModelAttribute("user") User user) {
+        //userService.removeUser(user);
+        userService.removeUserById(id);
+        return REDIRECT_USERS;
+    }
+
+    @GetMapping("/")
+    public String start() {
+        //model.addAttribute("userlist", userService.getAllUsers());
         return REDIRECT_USERS;
     }
 }

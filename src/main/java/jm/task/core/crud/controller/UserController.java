@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("/edit")
-    public String editPage(@RequestParam(value = "id", required = true) Long id, ModelMap model) {
+    public String editPage(@RequestParam(value = "id") Long id, ModelMap model) {
         model.addAttribute("user", userService.getUser(id));
         return "edit";
     }
@@ -45,16 +45,13 @@ public class UserController {
     }
 
     @PostMapping("/delete")
-    public String deleteUser(@RequestParam(value = "id", required = true) Long id, ModelMap model) {
-    //public String deleteUser(@ModelAttribute("user") User user) {
-        //userService.removeUser(user);
+    public String deleteUser(@RequestParam(value = "id") Long id) {
         userService.removeUserById(id);
         return REDIRECT_USERS;
     }
 
     @GetMapping("/")
     public String start() {
-        //model.addAttribute("userlist", userService.getAllUsers());
         return REDIRECT_USERS;
     }
 }

@@ -19,8 +19,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 @Configuration
 @EnableWebMvc
@@ -39,24 +38,8 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     @Primary
     public EntityManager getEntityManager(EntityManagerFactory emf) {
-        /*Map<String, String> parameters = new HashMap<>();
-
-        parameters.put("hibernate.connection.url", env.getProperty("db.url"));
-        parameters.put("hibernate.connection.username", env.getProperty("db.user"));
-        parameters.put("hibernate.connection.password", env.getProperty("db.pass"));*/
-        System.out.println("Thread_em_id: " + Thread.currentThread().getId());
-        //return emf.createEntityManager(parameters);
         return emf.createEntityManager();
     }
-    /*@Bean
-    public static EntityManagerFactory getEntityManagerFactory() {
-        return Persistence.createEntityManagerFactory("User");
-    }*/
-/*    @Bean
-    public EntityManagerFactory getEmf(LocalContainerEntityManagerFactoryBean emfb) {
-        System.out.println("Thread_emf_id: " + Thread.currentThread().getId());
-        return emfb.getObject();
-    }*/
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean emfb = new LocalContainerEntityManagerFactoryBean();
@@ -64,23 +47,13 @@ public class AppConfig implements WebMvcConfigurer {
         emfb.setDataSource(dataSource);
         emfb.setPackagesToScan(User.class.getPackageName());
         emfb.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        //emfb.setPersistenceUnitName("User");
-
-//        Properties props = new Properties();
-//        props.put("hibernate.show_sql", envt.getProperty("hibernate.show_sql"));
-//        props.put("hibernate.hbm2ddl.auto", envt.getProperty("hibernate.hbm2ddl.auto"));
-//        props.put("hibernate.dialect", envt.getProperty("hibernate.dialect"));
-//        props.put("characterEncoding", envt.getProperty("characterEncoding"));
-//        props.put("useUnicode", envt.getProperty("useUnicode"));
-//        emfb.setJpaProperties(props);
-        System.out.println("Thread_id: " + Thread.currentThread().getId());
         return emfb;
     }
     @Bean
     public DataSource makeDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        //dataSource.setDriverClassName("jdbc:mysql://localhost:3306/pp211");
-        dataSource.setDriverClassName(env.getProperty("db.driver"));
+
+        dataSource.setDriverClassName(Objects.requireNonNull(env.getProperty("db.driver")));
         dataSource.setUrl(env.getProperty("db.url"));
         dataSource.setUsername(env.getProperty("db.user"));
         dataSource.setPassword(env.getProperty("db.pass"));
@@ -95,6 +68,7 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+
         templateResolver.setApplicationContext(applicationContext);
         templateResolver.setPrefix("/WEB-INF/");
         templateResolver.setSuffix(".html");
@@ -105,6 +79,7 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+
         templateEngine.setTemplateResolver(templateResolver());
         templateEngine.setEnableSpringELCompiler(true);
         return templateEngine;
@@ -113,6 +88,7 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+
         resolver.setTemplateEngine(templateEngine());
         resolver.setCharacterEncoding("UTF-8");
         resolver.setContentType("text/html; charset=UTF-8");

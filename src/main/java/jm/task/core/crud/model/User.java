@@ -4,12 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table
+@Table(name= "user")
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +19,7 @@ public class User implements Serializable {
     @Column
     private String name;
 
-    @Column
+    @Column(name="lastname")
     private String lastName;
 
     @Column

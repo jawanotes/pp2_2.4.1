@@ -13,7 +13,7 @@ import java.util.List;
 public class UserDaoHibernateImpl implements UserDao {
     @PersistenceContext
     private final EntityManager entityManager;
-    private static final String TABLE_NAME = User.class.getSimpleName();
+    private static final String TABLE_NAME = User.class.getSimpleName().toLowerCase();
     private static final String ID_FIELD = "id";
     private static final String NAME_FIELD = "name";
     private static final String AGE_FIELD = "age";

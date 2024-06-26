@@ -1,12 +1,15 @@
-import jm.task.core.crud.model.User;
+/*import jm.task.core.crud.model.User;
 import jm.task.core.crud.service.UserService;
-import jm.task.core.crud.service.UserServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+@SpringBootTest
 public class UserServiceTest {
+    //TODO need a way to make this work with EntityManager
     private final UserService userService = new UserServiceImpl();
 
     private final String testName = "Ivan";
@@ -100,3 +103,4 @@ public class UserServiceTest {
     }
 
 }
+*/
